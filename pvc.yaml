@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: php-storage
+  namespace: default
+spec:
+  capacity:
+    storage: 128Mi
+  accessModes:
+  - ReadWriteMany
+  hostPath:
+    path: "/code"
+  persistentVolumeReclaimPolicy: Retain
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: php-storage
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: ""

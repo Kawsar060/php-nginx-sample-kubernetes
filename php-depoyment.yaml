@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+  labels:
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: php
+        tier: backend
+    spec:
+      volumes:
+      - name: php-storage
+        persistentVolumeClaim:
+          claimName: php-storage
+      containers:
+      - name: php
+        image: kawsar060/my-php-app:1.0.0
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: php-storage
+          mountPath: /code
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh"]
+      nodeSelector:
+        app2-deploy: "true"
